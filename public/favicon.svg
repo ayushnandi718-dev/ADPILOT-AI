@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+
+  <defs>
+    <!-- Background -->
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#05091F"/>
+      <stop offset="100%" stop-color="#111C5A"/>
+    </linearGradient>
+
+    <!-- Main C Gradient -->
+    <linearGradient id="cGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#D45BFF"/>
+      <stop offset="45%" stop-color="#7C3EFF"/>
+      <stop offset="100%" stop-color="#38B8FF"/>
+    </linearGradient>
+
+    <!-- Bars -->
+    <linearGradient id="barGrad" x1="0%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" stop-color="#284CFF"/>
+      <stop offset="100%" stop-color="#73C3FF"/>
+    </linearGradient>
+
+    <!-- Arrow -->
+    <linearGradient id="arrowGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="100%" stop-color="#ECECEC"/>
+    </linearGradient>
+
+    <!-- Glow -->
+    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="0" stdDeviation="8"
+        flood-color="#6B5CFF" flood-opacity="0.55"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="512" height="512" rx="90" fill="url(#bg)"/>
+
+  <!-- C Shape -->
+  <path
+    d="
+      M370 118
+      A155 155 0 1 0 372 392
+      L334 355
+      A104 104 0 1 1 332 157
+      Z"
+    fill="url(#cGrad)"
+    filter="url(#glow)"/>
+
+  <!-- Bars -->
+  <g>
+    <rect x="176" y="280" width="26" height="80" rx="5" fill="url(#barGrad)"/>
+    <rect x="214" y="245" width="26" height="115" rx="5" fill="url(#barGrad)"/>
+    <rect x="252" y="210" width="26" height="150" rx="5" fill="url(#barGrad)"/>
+    <rect x="290" y="175" width="26" height="185" rx="5" fill="url(#barGrad)"/>
+  </g>
+
+  <!-- Arrow -->
+  <g filter="url(#glow)">
+    <polyline
+      points="130,310 195,250 245,275 330,190"
+      fill="none"
+      stroke="url(#arrowGrad)"
+      stroke-width="22"
+      stroke-linecap="round"
+      stroke-linejoin="round"/>
+
+    <polygon
+      points="330,190 378,170 356,218"
+      fill="url(#arrowGrad)"/>
+  </g>
+
+  <!-- Speed Lines -->
+  <path
+    d="M108 342 C142 330 165 315 188 295"
+    stroke="#3CA9FF"
+    stroke-width="6"
+    fill="none"
+    stroke-linecap="round"/>
+
+  <path
+    d="M95 360 C135 347 168 330 195 307"
+    stroke="#5C7EFF"
+    stroke-width="4"
+    fill="none"
+    stroke-linecap="round"/>
+
+  <!-- Sparkle -->
+  <g fill="#E6E2FF">
+    <path d="M392 78l8 22 22 8-22 8-8 22-8-22-22-8 22-8z"/>
+  </g>
+
+</svg>

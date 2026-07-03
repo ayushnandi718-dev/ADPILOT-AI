@@ -1,0 +1,378 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model User {
+  id                String         @id @default(cuid())
+  clerkId           String         @unique @default("")
+  email             String         @unique
+  name              String?
+  passwordHash      String?
+  avatarUrl         String?
+  emailVerified     Boolean        @default(false)
+  verificationToken String?
+  plan              String         @default("free")
+  role              String         @default("user")
+  createdAt         DateTime       @default(now())
+  updatedAt         DateTime       @updatedAt
+  workspaces        Workspace[]
+  notifications     Notification[]
+  auditLogs         AuditLog[]
+  settings          Settings?
+  subscriptions     Subscription[]
+  transactions      Transaction[]
+  invoices          Invoice[]
+}
+
+model Workspace {
+  id        String   @id @default(cuid())
+  name      String
+  slug      String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  campaigns   Campaign[]
+  creatives   Creative[]
+  insights    Insight[]
+  recommendations Recommendation[]
+  conversations Conversation[]
+  automations   Automation[]
+  reports       Report[]
+  integrations  Integration[]
+}
+
+model Campaign {
+  id            String   @id @default(cuid())
+  workspaceId   String
+  workspace     Workspace @relation(fields: [workspaceId], references: [id])
+  name          String
+  platform      String   // google, meta, tiktok, taboola
+  status        String   @default("active") // active, paused, completed, draft
+  type          String   // search, display, social, video
+  budget        Float    @default(0)
+  spent         Float    @default(0)
+  impressions   Int      @default(0)
+  clicks        Int      @default(0)
+  conversions   Int      @default(0)
+  revenue       Float    @default(0)
+  ctr           Float    @default(0)
+  cpa           Float    @default(0)
+  roas          Float    @default(0)
+  qualityScore  Float?   @default(0)
+  startDate     DateTime
+  endDate       DateTime?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  creatives     Creative[]
+  insights      Insight[]
+}
+
+model Creative {
+  id          String   @id @default(cuid())
+  workspaceId String
+  workspace   Workspace @relation(fields: [workspaceId], references: [id])
+  campaignId  String?
+  campaign    Campaign? @relation(fields: [campaignId], references: [id])
+  platform    String   // google, meta, tiktok, taboola
+  type        String   // headline, primary_text, description, cta, email, landing_page
+  title       String?
+  content     String
+  tone        String?  // professional, casual, urgent, humorous
+  version     Int      @default(1)
+  isSaved     Boolean  @default(false)
+  metadata    String?  // JSON
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Insight {
+  id          String   @id @default(cuid())
+  workspaceId String
+  workspace   Workspace @relation(fields: [workspaceId], references: [id])
+  campaignId  String?
+  campaign    Campaign? @relation(fields: [campaignId], references: [id])
+  type        String   // budget, creative, audience, risk, opportunity
+  title       String
+  description String
+  impact      String   // high, medium, low
+  confidence  Float    @default(0)
+  metric      String?
+  currentValue Float?
+  suggestedValue Float?
+  expectedImprovement Float?
+  action      String?
+  priority    Int      @default(0)
+  isRead      Boolean  @default(false)
+  createdAt   DateTime @default(now())
+}
+
+model Recommendation {
+  id              String   @id @default(cuid())
+  workspaceId     String
+  workspace       Workspace @relation(fields: [workspaceId], references: [id])
+  title           String
+  description     String
+  category        String   // budget, creative, audience, strategy
+  priority        String   // critical, high, medium, low
+  expectedImpact  String   // high, medium, low
+  confidence      Float    @default(0)
+  businessExplanation String
+  suggestedAction String
+  metric          String?
+  currentValue    Float?
+  projectedValue  Float?
+  status          String   @default("pending") // pending, applied, dismissed
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model Conversation {
+  id          String   @id @default(cuid())
+  workspaceId String
+  workspace   Workspace @relation(fields: [workspaceId], references: [id])
+  title       String   @default("New Conversation")
+  model       String   @default("openrouter")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  messages    Message[]
+}
+
+model Message {
+  id             String   @id @default(cuid())
+  conversationId String
+  conversation   Conversation @relation(fields: [conversationId], references: [id])
+  role           String   // user, assistant
+  content        String
+  metadata       String?  // JSON
+  createdAt      DateTime @default(now())
+}
+
+model Automation {
+  id          String   @id @default(cuid())
+  workspaceId String
+  workspace   Workspace @relation(fields: [workspaceId], references: [id])
+  name        String
+  description String?
+  trigger     String   // roas_threshold, budget_exceeded, cpa_spike, ctr_drop, schedule
+  condition   String?  // JSON
+  action      String   // notify, pause_campaign, adjust_budget, generate_report, send_email
+  config      String?  // JSON
+  isActive    Boolean  @default(true)
+  lastRun     DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  notifications Notification[]
+}
+
+model Report {
+  id          String   @id @default(cuid())
+  workspaceId String
+  workspace   Workspace @relation(fields: [workspaceId], references: [id])
+  name        String
+  type        String   // weekly, monthly, custom
+  config      String?  // JSON
+  data        String?  // JSON
+  format      String   @default("pdf")
+  status      String   @default("draft") // draft, generating, completed, failed
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Integration {
+  id          String   @id @default(cuid())
+  workspaceId String
+  workspace   Workspace @relation(fields: [workspaceId], references: [id])
+  name        String
+  provider    String   // google_ads, meta, tiktok, taboola, hubspot, mailchimp, csv
+  status      String   @default("disconnected") // connected, disconnected, error
+  config      String?  // JSON (encrypted tokens, settings)
+  lastSync    DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  automationId String?
+  automation Automation? @relation(fields: [automationId], references: [id])
+  type      String   // success, error, warning, info, recommendation
+  title     String
+  message   String
+  isRead    Boolean  @default(false)
+  link      String?
+  createdAt DateTime @default(now())
+}
+
+model Settings {
+  id        String   @id @default(cuid())
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id])
+  theme     String   @default("dark")
+  aiModel   String   @default("openrouter")
+  aiApiKey  String?
+  aiBaseUrl String?
+  notifications Boolean @default(true)
+  data      String?  // JSON
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  action    String
+  resource  String
+  details   String?  // JSON
+  createdAt DateTime @default(now())
+}
+
+model SiteSettings {
+  id            String @id @default("default")
+  siteName      String @default("AdPilot AI")
+  supportEmail  String @default("support@adpilot.ai")
+  socialTwitter String @default("")
+  socialLinkedin String @default("")
+  socialGithub  String @default("")
+  contactPhone  String @default("")
+  contactAddress String @default("")
+  updatedAt     DateTime @updatedAt
+}
+
+model UpdateLog {
+  id        String   @id @default(cuid())
+  version   String
+  title     String
+  body      String
+  published Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model BillingPlan {
+  id           String         @id @default(cuid())
+  name         String         // free, starter, professional, business, enterprise
+  price        Float          @default(0)
+  currency     String         @default("USD")
+  billingCycle String         @default("monthly") // monthly, yearly
+  maxCampaigns Int?
+  maxAiQueries Int?
+  maxCreatives Int?
+  apiLimit     Int?
+  features     String?        // JSON
+  isActive     Boolean        @default(true)
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  subscriptions Subscription[]
+}
+
+model Subscription {
+  id                 String        @id @default(cuid())
+  userId             String
+  user               User          @relation(fields: [userId], references: [id])
+  planId             String?
+  plan               BillingPlan?  @relation(fields: [planId], references: [id])
+  planName           String        @default("free")
+  status             String        @default("active") // active, expired, cancelled, suspended, trialing
+  billingCycle       String        @default("monthly")
+  autoRenew          Boolean       @default(true)
+  trialEndsAt        DateTime?
+  currentPeriodStart DateTime      @default(now())
+  currentPeriodEnd   DateTime      @default(now())
+  cancelledAt        DateTime?
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @updatedAt
+  transactions       Transaction[]
+  invoices           Invoice[]
+}
+
+model Transaction {
+  id                    String     @id @default(cuid())
+  userId                String
+  user                  User       @relation(fields: [userId], references: [id])
+  subscriptionId        String?
+  subscription          Subscription? @relation(fields: [subscriptionId], references: [id])
+  provider              String     @default("manual") // stripe, razorpay, paypal, lemonsqueezy, paddle, cashfree, manual
+  providerTransactionId String?
+  paymentMethod         String?    // card, upi, netbanking, wallet
+  planName              String
+  amount                Float
+  currency              String     @default("USD")
+  tax                   Float      @default(0)
+  taxType               String?    // gst, vat, sales_tax
+  couponId              String?
+  couponCode            String?
+  discountAmount        Float      @default(0)
+  status                String     @default("pending") // paid, pending, failed, cancelled, refunded, processing
+  description           String?
+  billingAddress        String?
+  taxId                 String?
+  paidAt                DateTime?
+  refundedAt            DateTime?
+  createdAt             DateTime   @default(now())
+  updatedAt             DateTime   @updatedAt
+  invoice               Invoice?
+  refunds               Refund[]
+}
+
+model Invoice {
+  id              String        @id @default(cuid())
+  invoiceNumber   String        @unique
+  userId          String
+  user            User          @relation(fields: [userId], references: [id])
+  subscriptionId  String?
+  subscription    Subscription? @relation(fields: [subscriptionId], references: [id])
+  transactionId   String?   @unique
+  transaction     Transaction?  @relation(fields: [transactionId], references: [id])
+  type            String        @default("invoice") // invoice, tax_invoice, credit_note, refund_receipt
+  status          String        @default("paid")
+  amount          Float
+  tax             Float         @default(0)
+  total           Float
+  currency        String        @default("USD")
+  billingAddress  String?
+  shippingAddress String?
+  taxId           String?
+  notes           String?
+  pdfUrl          String?
+  emailedAt       DateTime?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+}
+
+model Refund {
+  id            String      @id @default(cuid())
+  transactionId String
+  transaction   Transaction @relation(fields: [transactionId], references: [id])
+  amount        Float
+  reason        String?
+  notes         String?
+  status        String      @default("pending") // pending, approved, rejected
+  approvedBy    String?
+  approvedAt    DateTime?
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+}
+
+model Coupon {
+  id          String    @id @default(cuid())
+  code        String    @unique
+  type        String    @default("percentage") // percentage, fixed
+  value       Float     // percentage or fixed amount
+  maxUses     Int?
+  usedCount   Int       @default(0)
+  minAmount   Float?
+  maxDiscount Float?
+  expiresAt   DateTime?
+  isActive    Boolean   @default(true)
+  description String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
