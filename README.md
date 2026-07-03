@@ -1,5 +1,8 @@
 <p align="center">
-  <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=36&duration=2500&pause=1000&color=00F5FF&center=true&vCenter=true&repeat=true&width=900&lines=✦+AdPilot+AI+✦;MARKETING+INTELLIGENCE+NEXUS;ANALYZE+•+OPTIMIZE+•+DOMINATE" />
+  <img
+    src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=36&duration=2500&pause=1000&color=00F5FF&center=true&vCenter=true&width=950&lines=%E2%9A%A1+AdPilot+AI+%E2%9A%A1;CYBERPUNK+MARKETING+INTELLIGENCE;ANALYZE+%7C+OPTIMIZE+%7C+DOMINATE;AI+POWERED+GROWTH+ENGINE"
+    alt="Typing SVG"
+  />
 </p>
 
 <p align="center">
