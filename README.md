@@ -316,6 +316,8 @@ Open **[http://localhost:3000](http://localhost:3000)** — your command center 
 | `SMTP_PASS` | Email server password | ◻️ |
 | `OPENROUTER_API_KEY` | OpenRouter API key | ◻️ |
 | `DEFAULT_AI_PROVIDER` | Default AI provider | ◻️ |
+| `ADMIN_EMAIL` | Predefined admin login email | ◻️ |
+| `ADMIN_PASSWORD` | Predefined admin login password | ◻️ |
 
 <br>
 
@@ -421,6 +423,83 @@ src/
 
 <p align="center">
   <img src="https://github-profile-3d-contrib.vercel.app/api/account/ayushnandi718-dev?theme=cyberpunk" width="90%"/>
+</p>
+
+<br>
+
+<p align="center">
+  <img src="https://capsule-render.vercel.app/api?type=rect&height=2&color=0:00F5FF,50:7C3AED,100:FF00E5"/>
+</p>
+
+---
+
+## 🤝 Open for Contributions
+
+<p align="center">
+  <img src="https://img.shields.io/badge/PRs-Welcome-00F5FF?style=for-the-badge&labelColor=0A0A0F&color=7C3AED"/>
+  <img src="https://img.shields.io/badge/Contributions-Open-00F5FF?style=for-the-badge&labelColor=0A0A0F&color=00F5FF"/>
+  <img src="https://img.shields.io/badge/Fresh%20Ideas-Yes!-FF00E5?style=for-the-badge&labelColor=0A0A0F&color=FF00E5"/>
+</p>
+
+We're actively looking for contributors! Here's how you can help:
+
+### 🚀 Ways to Contribute
+
+| Area | Ideas |
+|:-----|:------|
+| **🧠 AI Features** | More ad copy generators, A/B test predictions, sentiment analysis |
+| **🔌 Integrations** | Real Google/Meta/TikTok API connectors (instead of stubs) |
+| **💳 Payments** | Wire up Stripe, PayPal, Razorpay webhooks |
+| **📊 Analytics** | Export to CSV/PDF, custom date ranges, real-time dashboards |
+| **⚡ Automation** | Background job runner, Slack/email notifications |
+| **🎨 UI/UX** | Dark mode variants, mobile polish, animations |
+| **🐛 Bug Fixes** | Check the [Issues](../../issues) tab |
+| **📖 Docs** | Improve API docs, add usage examples |
+
+### 📋 Getting Started
+
+```bash
+# Fork & clone
+git clone https://github.com/your-username/adpilot-ai.git
+cd adpilot-ai
+
+# Install
+npm install
+
+# Create branch
+git checkout -b feature/your-feature-name
+
+# Make changes & commit
+git commit -m "feat: add your feature description"
+
+# Push & open a PR
+git push origin feature/your-feature-name
+```
+
+### ✅ Guidelines
+
+- Keep PRs focused — one feature/fix per PR
+- Follow existing code style (TypeScript, Tailwind, no comments)
+- Test your changes with `npm run lint` and `npx tsc --noEmit`
+- Update the README if your change affects usage
+- Be kind and constructive in code reviews
+
+<p align="center">
+  <sub>All skill levels welcome. If you're new to open source, we're here to help you through your first PR! 🚀</sub>
+</p>
+
+---
+
+## 🏷️ Tags
+
+<p align="center">
+
+`ai-marketing` `nextjs` `react` `typescript` `prisma` `sqlite` `tailwind-css` `jwt-auth` `saas` `marketing-intelligence` `ad-copy-generator` `campaign-management` `analytics-dashboard` `openrouter` `framer-motion` `zustand` `react-query` `recharts`
+
+</p>
+
+<p align="center">
+  <sub>Click the <b>🏷️ Topics</b> button at the top of the repo to add these tags on GitHub.</sub>
 </p>
 
 <br>
